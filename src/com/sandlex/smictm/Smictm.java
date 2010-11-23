@@ -18,24 +18,29 @@ public class Smictm
     private TaskViewPanel taskPanel;
     private CalendarViewPanel calendarPanel;
     private JFrame frame;
+    private static String path;
 
     public static void main(String[] arg) {
 
-        String path = "tasks";
-
-        if (arg.length == 1) {
+        if (arg.length > 0) {
             path = arg[0];
+        } else {
+            path = "tasks";
         }
 
+        boolean isPathOk = true;
         File dir = new File(path);
         if (!dir.exists()) {
-            System.out.println("Directory " + path + " doesn't exist.");
-            System.exit(-1);
+            isPathOk = dir.mkdir();
         }
 
         File dirClosed = new File(path + File.separator + "closed");
         if (!dirClosed.exists()) {
-            System.out.println("Directory " + path + File.separator + "closed" + " doesn't exists.");
+            isPathOk = dirClosed.mkdir();
+        }
+
+        if (!isPathOk) {
+            System.out.println("Directory '" + path + "' cannot be created in current directory.");
             System.exit(-1);
         }
 
@@ -55,7 +60,7 @@ public class Smictm
 
     private void initView() {
 
-        frame = new JFrame("smictm");
+        frame = new JFrame("smictm - " + path);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1000,700));
 

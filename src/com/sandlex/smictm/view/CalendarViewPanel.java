@@ -2,25 +2,23 @@ package com.sandlex.smictm.view;
 
 import com.sandlex.smictm.model.Model;
 import com.sandlex.smictm.model.TaskEventBean;
-import net.sf.nachocalendar.CalendarFactory;
-import net.sf.nachocalendar.components.DatePanel;
-import net.sf.nachocalendar.event.DateSelectionEvent;
-import net.sf.nachocalendar.event.DateSelectionListener;
-import net.sf.nachocalendar.model.DateSelectionModel;
-import net.sf.nachocalendar.model.DefaultDateSelectionModel;
+import com.toedter.calendar.JCalendar;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Calendar;
 import java.util.Observable;
 
 /**
  * @author Alexey Peskov
  */
-public class CalendarViewPanel extends AbstractPanel {
+public class CalendarViewPanel extends AbstractPanel implements PropertyChangeListener {
 
     private JTable table;
-    private DefaultDateSelectionModel dsm;
+    private JCalendar calendar;
 
     public CalendarViewPanel(Model model) {
         super(model);
@@ -31,19 +29,10 @@ public class CalendarViewPanel extends AbstractPanel {
         BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
 
-        final DatePanel datepanel = CalendarFactory.createDatePanel();
-        datepanel.setSelectionMode(DateSelectionModel.SINGLE_SELECTION);
-        dsm = new DefaultDateSelectionModel();
-        datepanel.setDateSelectionModel(dsm);
-        dsm.addDateSelectionListener(new DateSelectionListener() {
+        calendar = new JCalendar();
+        calendar.addPropertyChangeListener(this);
 
-            public void valueChanged(DateSelectionEvent dateSelectionEvent) {
-                model.setSelectionDate(dsm.getLeadSelectionDate());
-                model.selectTasksForDate();
-            }
-        });
-
-        add(datepanel, BorderLayout.NORTH);
+        add(calendar, BorderLayout.NORTH);
 
         JScrollPane scrollPane = new JScrollPane();
         table = new CalendarViewTable();
@@ -54,6 +43,14 @@ public class CalendarViewPanel extends AbstractPanel {
 
     public void update(Observable o, Object arg) {
         ((AbstractTableModel) table.getModel()).fireTableDataChanged();
+    }
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("calendar")) {
+            Calendar cal = (Calendar) evt.getNewValue();
+            model.setSelectionDate(cal.getTime());
+            model.selectTasksForDate();
+        }
     }
 
     private class CalendarViewTable extends TaskTable {

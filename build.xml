@@ -2,18 +2,16 @@
 <project default="create_run_jar" name="Create Runnable Jar for Project stm with Jar-in-Jar Loader">
     <target name="create_run_jar">
         <mkdir dir="release/"/>
-        <mkdir dir="release/tasks"/>
-        <mkdir dir="release/tasks/closed"/>
         <jar destfile="release/smictm-0.1.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="com.sandlex.smictm.Smictm"/>
                 <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ nachocalendar-0.23.jar xstream-1.3.1.jar"/>
+                <attribute name="Rsrc-Class-Path" value="./ jcalendar-1.3.3.jar xstream-1.3.1.jar"/>
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="out/production/smictm"/>
-            <zipfileset dir="lib" includes="nachocalendar-0.23.jar"/>
+            <zipfileset dir="lib" includes="jcalendar-1.3.3.jar"/>
             <zipfileset dir="lib" includes="xstream-1.3.1.jar"/>
         </jar>
     </target>

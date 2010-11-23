@@ -1,0 +1,21 @@
++ if parameter is not specified - project folder tasks/closed, if specified - specified folder. Create if folder is not
+  found in app directory. Parameter should be name without path. If directory cannot be created - just leave.
++ replace nanocalendar with jcalendar (http://www.toedter.com/en/jcalendar/index.html)
+
+- zip of exit/unzip on start - for dropbox support
+
+? Edit
+? Copy from completed - fill area with text - recreation
+? Copy lists from tables
+? Show all completed tasks
+? Show task status history
+? Command+enter
+? Current date indic in calendar
+
+priority
+projects
+project priority
+due date
+task relations
+statistics
+copy tasks in clipboard on ctrl-c
