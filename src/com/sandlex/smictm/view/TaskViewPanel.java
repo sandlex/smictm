@@ -5,8 +5,6 @@ import com.sandlex.smictm.model.Model;
 import com.sandlex.smictm.model.Task;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
@@ -55,7 +53,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER && e.isControlDown())  {
             model.addTask(area.getText());
-//            area.setText("");
+            area.setText("");
         }
     }
 
@@ -67,7 +65,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         table.getSelectionModel().setSelectionInterval(model.getTasksNumber() - 1, model.getTasksNumber() - 1);
     }
 
-    private class TaskViewTable extends TaskTable implements MouseListener, ListSelectionListener
+    private class TaskViewTable extends TaskTable implements MouseListener
     {
 
         public TaskViewTable() {
@@ -78,19 +76,6 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
             getColumnModel().getColumn(0).setCellEditor(editor);
 
             addMouseListener(this);
-            getSelectionModel().addListSelectionListener(this);
-        }
-
-        public void valueChanged(ListSelectionEvent e) {
-            super.valueChanged(e);
-            int index = getSelectionModel().getLeadSelectionIndex();
-            if (!e.getValueIsAdjusting()) { //todo fired twice fix
-                if (index > -1) {
-                    area.setText(model.getTask(index).getName());
-                } else {
-                    area.setText("");
-                }
-            }
         }
 
         public void mouseClicked(MouseEvent e) {
