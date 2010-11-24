@@ -55,7 +55,9 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER && e.isControlDown())  {
+        //isMetaDown - returns whether the meta key was pressed during the event. Maps to the Windows key on Windows
+        // and the Command key on Mac OS X. 
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && (e.isControlDown() || e.isMetaDown()))  {
             model.addTask(area.getText());
             area.setText("");
         }
@@ -89,19 +91,15 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         }
 
         public void mousePressed(MouseEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
         }
 
         public void mouseReleased(MouseEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
         }
 
         public void mouseEntered(MouseEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
         }
 
         public void mouseExited(MouseEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
         }
 
         private class TaskViewTableCellEditor extends AbstractCellEditor implements TableCellEditor {
