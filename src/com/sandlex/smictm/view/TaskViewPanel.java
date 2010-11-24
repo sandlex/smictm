@@ -32,19 +32,23 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
 
-        JScrollPane scrollPane = new JScrollPane();
+        JScrollPane tableScrollPane = new JScrollPane();
 
         table = new TaskViewTable();
-        scrollPane.setViewportView(table);
+        tableScrollPane.setViewportView(table);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.add(scrollPane, JSplitPane.TOP);
+        splitPane.add(tableScrollPane, JSplitPane.TOP);
 
+        JScrollPane areaScrollPane = new JScrollPane();
         area = new JTextArea();
+        areaScrollPane.setViewportView(area);
         area.addKeyListener(this);
-        splitPane.add(area, JSplitPane.BOTTOM);
+        splitPane.add(areaScrollPane, JSplitPane.BOTTOM);
 
         add(splitPane, BorderLayout.CENTER);
+
+        splitPane.setDividerLocation(580);
     }
 
     public void keyTyped(KeyEvent e) {
