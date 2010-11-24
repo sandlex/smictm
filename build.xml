@@ -2,7 +2,7 @@
 <project default="create_run_jar" name="Create Runnable Jar for Project stm with Jar-in-Jar Loader">
     <target name="create_run_jar">
         <mkdir dir="release/"/>
-        <jar destfile="release/smictm-0.1.jar">
+        <jar destfile="release/smictm-0.2.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="com.sandlex.smictm.Smictm"/>

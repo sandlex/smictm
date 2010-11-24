@@ -60,7 +60,7 @@ public class Smictm
 
     private void initView() {
 
-        frame = new JFrame("smictm - " + path);
+        frame = new JFrame("smictm 0.2 - " + path);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1000,700));
 
