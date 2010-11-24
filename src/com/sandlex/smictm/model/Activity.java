@@ -5,6 +5,6 @@ package com.sandlex.smictm.model;
  */
 public enum Activity {
 
-    Doing
+    Touched
 
 }

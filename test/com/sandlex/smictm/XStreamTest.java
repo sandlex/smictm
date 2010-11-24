@@ -52,7 +52,7 @@ public class XStreamTest {
         list.add(task);
 
         Task tsk = new Task("Test task new");
-        tsk.addActivity(Activity.Doing);
+        tsk.addActivity(Activity.Touched);
         list.add(tsk);
     }
 

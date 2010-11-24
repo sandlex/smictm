@@ -84,7 +84,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) {
-                model.addActivity(getSelectedRow(), Activity.Doing);
+                model.addActivity(getSelectedRow(), Activity.Touched);
             }
         }
 
