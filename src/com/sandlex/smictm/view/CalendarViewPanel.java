@@ -58,9 +58,15 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
         public CalendarViewTable() {
             super(new CalendarViewTableModel());
         }
+
+        @Override
+        protected String getToolTip(int row)
+        {
+            return ((TaskAbstractTableModel) table.getModel()).getTaskInfo(row);
+        }
     }
 
-    private class CalendarViewTableModel extends AbstractTableModel {
+    private class CalendarViewTableModel extends TaskAbstractTableModel {
         private String[] columnNames = { "Task", "Activities" };
 
         public String getColumnName(int column) {
@@ -87,6 +93,12 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
             }
 
             throw new IllegalArgumentException();
+        }
+
+        public String getTaskInfo(int row) {
+            TaskEventBean taskEvent = model.getCalendarTask(row);
+
+            return taskEvent.getTask().getName();
         }
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {

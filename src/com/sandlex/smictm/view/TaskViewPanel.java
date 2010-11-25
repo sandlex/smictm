@@ -71,8 +71,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         table.getSelectionModel().setSelectionInterval(model.getTasksNumber() - 1, model.getTasksNumber() - 1);
     }
 
-    private class TaskViewTable extends TaskTable implements MouseListener
-    {
+    private class TaskViewTable extends TaskTable implements MouseListener {
 
         public TaskViewTable() {
             super(new TaskViewTableModel());
@@ -100,6 +99,11 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         }
 
         public void mouseExited(MouseEvent e) {
+        }
+
+        @Override
+        protected String getToolTip(int row) {
+            return ((TaskAbstractTableModel) table.getModel()).getTaskInfo(row);
         }
 
         private class TaskViewTableCellEditor extends AbstractCellEditor implements TableCellEditor {
@@ -132,7 +136,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         }
     }
 
-    private class TaskViewTableModel extends AbstractTableModel {
+    private class TaskViewTableModel extends TaskAbstractTableModel {
         private String[] columnNames = { "State", "Task" };
 
         public String getColumnName(int column) {
@@ -159,6 +163,12 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
             }
 
             throw new IllegalArgumentException();
+        }
+
+        public String getTaskInfo(int row) {
+            Task task = model.getTask(row);
+
+            return task.getName();
         }
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
