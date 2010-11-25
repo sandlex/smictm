@@ -83,7 +83,7 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
                 case 0:
                     return taskEvent.getTask().getShortName();
                 case 1:
-                    return taskEvent.getTaskEvent().getName();
+                    return taskEvent.getStateChanges();
             }
 
             throw new IllegalArgumentException();
