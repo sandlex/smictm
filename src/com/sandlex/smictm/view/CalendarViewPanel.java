@@ -61,7 +61,7 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
     }
 
     private class CalendarViewTableModel extends AbstractTableModel {
-        private String[] columnNames = { "Task name", "Activity" };
+        private String[] columnNames = { "Task", "Activities" };
 
         public String getColumnName(int column) {
             return columnNames[column];

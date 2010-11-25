@@ -133,7 +133,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
     }
 
     private class TaskViewTableModel extends AbstractTableModel {
-        private String[] columnNames = { "State", "Task name" };
+        private String[] columnNames = { "State", "Task" };
 
         public String getColumnName(int column) {
             return columnNames[column];
