@@ -43,6 +43,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         splitPane.add(tableScrollPane, JSplitPane.TOP);
 
         JScrollPane areaScrollPane = new JScrollPane();
+        UIManager.put("TextArea.font", UIManager.get("TextField.font"));
         area = new JTextArea();
         areaScrollPane.setViewportView(area);
         area.addKeyListener(this);
