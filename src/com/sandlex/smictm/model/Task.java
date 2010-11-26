@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Alexey Peskov
  */
-public class Task {
+public class Task implements Comparable {
 
     private String name;
     private List<TaskEvent> activities = new ArrayList<TaskEvent>();
@@ -99,5 +99,10 @@ public class Task {
         }
 
         return isNew;
+    }
+
+    public int compareTo(Object o) {
+        return getActivities().get(getActivities().size() - 1).getDate().compareTo(
+                ((Task) o).getActivities().get(((Task) o).getActivities().size() - 1).getDate());
     }
 }

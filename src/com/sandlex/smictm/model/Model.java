@@ -64,7 +64,7 @@ public class Model extends Observable {
     public void selectTasksForDate() {
 
         calendarTasks = new ArrayList<TaskEventBean>();
-        Map<Task, String> calendarTasksMap = new HashMap<Task, String>();
+        Map<Task, String> calendarTasksMap = new TreeMap<Task, String>();
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 
         for (Object task : tasks) {
