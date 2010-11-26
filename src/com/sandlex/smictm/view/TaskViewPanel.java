@@ -115,6 +115,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
                     isEditMode = true;
                     rowBeingEdited = getSelectedRow();
                     area.setText(model.getTask(rowBeingEdited).getName());
+                    area.requestFocusInWindow();
                 }
             }
         }
