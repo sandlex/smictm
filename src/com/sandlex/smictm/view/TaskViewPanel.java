@@ -70,9 +70,9 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            area.setText("");
             if (isEditMode) {
                 isEditMode = false;
-                area.setText("");
                 updateTableSelection();
             }
         }

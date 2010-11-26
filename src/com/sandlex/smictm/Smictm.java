@@ -68,6 +68,16 @@ public class Smictm
         splitPane.add(taskPanel, JSplitPane.LEFT);
         splitPane.add(calendarPanel, JSplitPane.RIGHT);
         frame.getContentPane().add(splitPane, BorderLayout.CENTER);
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            SwingUtilities.updateComponentTreeUI(frame);
+        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException e) {
+        } catch (IllegalAccessException e) {
+        } catch (UnsupportedLookAndFeelException e) {
+        }
+
         frame.pack();
         frame.setVisible(true);
     }
