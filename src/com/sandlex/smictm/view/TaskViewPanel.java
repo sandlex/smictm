@@ -211,7 +211,13 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
             super.setValueAt(aValue, rowIndex, columnIndex);
 
             if (columnIndex == 0) {
-                model.addState(rowIndex, aValue.toString());
+
+                if (JOptionPane.showConfirmDialog(table, "Apply new state " + aValue + "?", "Confirmation", JOptionPane.OK_CANCEL_OPTION)
+                        == JOptionPane.OK_OPTION) {
+                    model.addState(rowIndex, aValue.toString());
+                } else {
+                    
+                }
             }
         }
     }
