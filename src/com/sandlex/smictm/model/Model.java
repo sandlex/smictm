@@ -34,6 +34,12 @@ public class Model extends Observable {
         selectTasksForDate();
     }
 
+    public void updateTask(int index, String name) {
+        Task newTask = new Task((Task) tasks.get(index), name);
+        tasks.set(index, newTask);
+        selectTasksForDate();
+    }
+
     public Task getTask(int index) {
         return (Task) tasks.get(index);
     }

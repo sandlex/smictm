@@ -21,6 +21,8 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
     private JTextArea area;
     private TaskTable table;
+    private boolean isEditMode = false;
+    private int rowBeingEdited = -1;
 
     public TaskViewPanel(Model model) {
         super(model);
@@ -56,19 +58,37 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
     public void keyPressed(KeyEvent e) {
         //isMetaDown - returns whether the meta key was pressed during the event. Maps to the Windows key on Windows
-        // and the Command key on Mac OS X. 
-        if (e.getKeyCode() == KeyEvent.VK_ENTER && (e.isControlDown() || e.isMetaDown()))  {
-            model.addTask(area.getText());
+        // and the Command key on Mac OS X.
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && (e.isControlDown() || e.isMetaDown())) {
+            if (isEditMode) {
+                model.updateTask(rowBeingEdited, area.getText());
+                isEditMode = false;
+            } else {
+                model.addTask(area.getText());
+            }
             area.setText("");
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            if (isEditMode) {
+                isEditMode = false;
+                area.setText("");
+                updateTableSelection();
+            }
         }
     }
 
     public void keyReleased(KeyEvent e) {
     }
 
-    public void update(Observable o, Object arg) {
+    private void updateTableSelection() {
+        int row = table.getSelectedRow();
         ((AbstractTableModel) table.getModel()).fireTableDataChanged();
-        table.getSelectionModel().setSelectionInterval(model.getTasksNumber() - 1, model.getTasksNumber() - 1);
+        table.getSelectionModel().setSelectionInterval(row, row);
+    }
+
+    public void update(Observable o, Object arg) {
+        updateTableSelection();
     }
 
     private class TaskViewTable extends TaskTable implements MouseListener {
@@ -76,6 +96,9 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         public TaskViewTable() {
             super(new TaskViewTableModel());
             getColumnModel().getColumn(0).setMaxWidth(120);
+            getColumnModel().getColumn(2).setMaxWidth(15);
+            getColumnModel().getColumn(2).setPreferredWidth(15);
+            getColumnModel().getColumn(2).setMinWidth(15);
 
             TaskViewTableCellEditor editor = new TaskViewTableCellEditor();
             getColumnModel().getColumn(0).setCellEditor(editor);
@@ -85,7 +108,13 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) {
-                model.addActivity(getSelectedRow(), Activity.Touched);
+                if (getColumnModel().getSelectedColumns()[0] == 1) {
+                    model.addActivity(getSelectedRow(), Activity.Touched);
+                } else if (getColumnModel().getSelectedColumns()[0] == 2) {
+                    isEditMode = true;
+                    rowBeingEdited = getSelectedRow();
+                    area.setText(model.getTask(rowBeingEdited).getName());
+                }
             }
         }
 
@@ -137,7 +166,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
     }
 
     private class TaskViewTableModel extends TaskAbstractTableModel {
-        private String[] columnNames = { "State", "Task" };
+        private String[] columnNames = { "State", "Task", "" };
 
         public String getColumnName(int column) {
             return columnNames[column];
@@ -160,6 +189,8 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
                     return task.getState();
                 case 1:
                     return task.getShortName();
+                case 2:
+                    return row == rowBeingEdited && isEditMode ? " * " : "...";
             }
 
             throw new IllegalArgumentException();

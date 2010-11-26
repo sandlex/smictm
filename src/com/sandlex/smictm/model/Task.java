@@ -19,6 +19,11 @@ public class Task {
         activities.add(new StateChange(State.New));   
     }
 
+    public Task(Task task, String name) {
+        this.name = name;
+        activities.addAll(task.getActivities());
+    }
+
     public void addActivity(Activity activity) {
         activities.add(new DatedActivity(activity));
     }
