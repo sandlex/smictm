@@ -101,9 +101,10 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         public TaskViewTable() {
             super(new TaskViewTableModel());
             getColumnModel().getColumn(0).setMaxWidth(120);
-            getColumnModel().getColumn(2).setMaxWidth(15);
-            getColumnModel().getColumn(2).setPreferredWidth(15);
-            getColumnModel().getColumn(2).setMinWidth(15);
+            getColumnModel().getColumn(0).setPreferredWidth(120);
+            getColumnModel().getColumn(2).setMaxWidth(20);
+            getColumnModel().getColumn(2).setPreferredWidth(20);
+            getColumnModel().getColumn(2).setMinWidth(20);
 
             TaskViewTableCellEditor editor = new TaskViewTableCellEditor();
             getColumnModel().getColumn(0).setCellEditor(editor);
@@ -196,7 +197,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
                 case 1:
                     return task.getShortName();
                 case 2:
-                    return row == rowBeingEdited && isEditMode ? " * " : "...";
+                    return (row == rowBeingEdited) && isEditMode ? " * " : "...";
             }
 
             throw new IllegalArgumentException();
@@ -221,8 +222,6 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
                 if (JOptionPane.showConfirmDialog(table, "Apply new state " + aValue + "?", "Confirmation", JOptionPane.OK_CANCEL_OPTION)
                         == JOptionPane.OK_OPTION) {
                     model.addState(rowIndex, aValue.toString());
-                } else {
-                    
                 }
             }
         }
