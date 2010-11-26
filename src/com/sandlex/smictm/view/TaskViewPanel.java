@@ -19,6 +19,10 @@ import java.util.Observable;
  */
 public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
+    public static final String STATE_COL_NAME = "State";
+    public static final String TASK_COL_NAME = "Task";
+    public static final String EDIT_COL_NAME = "";
+
     private JTextArea area;
     private TaskTable table;
     private boolean isEditMode = false;
@@ -109,9 +113,9 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) {
-                if (getColumnModel().getSelectedColumns()[0] == 1) {
+                if (getColumnModel().getSelectedColumns()[0] == getColumnModel().getColumnIndex(TASK_COL_NAME)) {
                     model.addActivity(getSelectedRow(), Activity.Touched);
-                } else if (getColumnModel().getSelectedColumns()[0] == 2) {
+                } else if (getColumnModel().getSelectedColumns()[0] == getColumnModel().getColumnIndex(EDIT_COL_NAME)) {
                     isEditMode = true;
                     rowBeingEdited = getSelectedRow();
                     area.setText(model.getTask(rowBeingEdited).getName());
@@ -168,7 +172,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
     }
 
     private class TaskViewTableModel extends TaskAbstractTableModel {
-        private String[] columnNames = { "State", "Task", "" };
+        private String[] columnNames = { STATE_COL_NAME, TASK_COL_NAME, EDIT_COL_NAME };
 
         public String getColumnName(int column) {
             return columnNames[column];
