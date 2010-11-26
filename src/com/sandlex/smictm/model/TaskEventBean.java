@@ -6,18 +6,18 @@ package com.sandlex.smictm.model;
 public class TaskEventBean {
 
     private Task task;
-    private TaskEvent taskEvent;
+    private String stateChanges;
 
-    public TaskEventBean(Task task, TaskEvent taskEvent) {
+    public TaskEventBean(Task task, String stateChanges) {
         this.task = task;
-        this.taskEvent = taskEvent;
+        this.stateChanges = stateChanges;
     }
 
     public Task getTask() {
         return task;
     }
 
-    public TaskEvent getTaskEvent() {
-        return taskEvent;
+    public String getStateChanges() {
+        return stateChanges;
     }
 }

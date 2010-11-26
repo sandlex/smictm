@@ -19,8 +19,14 @@ import java.util.Observable;
  */
 public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
+    public static final String STATE_COL_NAME = "State";
+    public static final String TASK_COL_NAME = "Task";
+    public static final String EDIT_COL_NAME = "";
+
     private JTextArea area;
     private TaskTable table;
+    private boolean isEditMode = false;
+    private int rowBeingEdited = -1;
 
     public TaskViewPanel(Model model) {
         super(model);
@@ -41,6 +47,7 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         splitPane.add(tableScrollPane, JSplitPane.TOP);
 
         JScrollPane areaScrollPane = new JScrollPane();
+        UIManager.put("TextArea.font", UIManager.get("TextField.font"));
         area = new JTextArea();
         areaScrollPane.setViewportView(area);
         area.addKeyListener(this);
@@ -56,27 +63,47 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
     public void keyPressed(KeyEvent e) {
         //isMetaDown - returns whether the meta key was pressed during the event. Maps to the Windows key on Windows
-        // and the Command key on Mac OS X. 
-        if (e.getKeyCode() == KeyEvent.VK_ENTER && (e.isControlDown() || e.isMetaDown()))  {
-            model.addTask(area.getText());
+        // and the Command key on Mac OS X.
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && (e.isControlDown() || e.isMetaDown())) {
+            if (isEditMode) {
+                model.updateTask(rowBeingEdited, area.getText());
+                isEditMode = false;
+            } else {
+                model.addTask(area.getText());
+            }
             area.setText("");
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            area.setText("");
+            if (isEditMode) {
+                isEditMode = false;
+                updateTableSelection();
+            }
         }
     }
 
     public void keyReleased(KeyEvent e) {
     }
 
-    public void update(Observable o, Object arg) {
+    private void updateTableSelection() {
+        int row = table.getSelectedRow();
         ((AbstractTableModel) table.getModel()).fireTableDataChanged();
-        table.getSelectionModel().setSelectionInterval(model.getTasksNumber() - 1, model.getTasksNumber() - 1);
+        table.getSelectionModel().setSelectionInterval(row, row);
     }
 
-    private class TaskViewTable extends TaskTable implements MouseListener
-    {
+    public void update(Observable o, Object arg) {
+        updateTableSelection();
+    }
+
+    private class TaskViewTable extends TaskTable implements MouseListener {
 
         public TaskViewTable() {
             super(new TaskViewTableModel());
             getColumnModel().getColumn(0).setMaxWidth(120);
+            getColumnModel().getColumn(2).setMaxWidth(15);
+            getColumnModel().getColumn(2).setPreferredWidth(15);
+            getColumnModel().getColumn(2).setMinWidth(15);
 
             TaskViewTableCellEditor editor = new TaskViewTableCellEditor();
             getColumnModel().getColumn(0).setCellEditor(editor);
@@ -86,7 +113,14 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) {
-                model.addActivity(getSelectedRow(), Activity.Touched);
+                if (getColumnModel().getSelectedColumns()[0] == getColumnModel().getColumnIndex(TASK_COL_NAME)) {
+                    model.addActivity(getSelectedRow(), Activity.Touched);
+                } else if (getColumnModel().getSelectedColumns()[0] == getColumnModel().getColumnIndex(EDIT_COL_NAME)) {
+                    isEditMode = true;
+                    rowBeingEdited = getSelectedRow();
+                    area.setText(model.getTask(rowBeingEdited).getName());
+                    area.requestFocusInWindow();
+                }
             }
         }
 
@@ -100,6 +134,11 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         }
 
         public void mouseExited(MouseEvent e) {
+        }
+
+        @Override
+        protected String getToolTip(int row) {
+            return ((TaskAbstractTableModel) table.getModel()).getTaskInfo(row);
         }
 
         private class TaskViewTableCellEditor extends AbstractCellEditor implements TableCellEditor {
@@ -132,8 +171,8 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
         }
     }
 
-    private class TaskViewTableModel extends AbstractTableModel {
-        private String[] columnNames = { "State", "Task name" };
+    private class TaskViewTableModel extends TaskAbstractTableModel {
+        private String[] columnNames = { STATE_COL_NAME, TASK_COL_NAME, EDIT_COL_NAME };
 
         public String getColumnName(int column) {
             return columnNames[column];
@@ -156,9 +195,17 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
                     return task.getState();
                 case 1:
                     return task.getShortName();
+                case 2:
+                    return row == rowBeingEdited && isEditMode ? " * " : "...";
             }
 
             throw new IllegalArgumentException();
+        }
+
+        public String getTaskInfo(int row) {
+            Task task = model.getTask(row);
+
+            return task.getName();
         }
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -170,7 +217,13 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
             super.setValueAt(aValue, rowIndex, columnIndex);
 
             if (columnIndex == 0) {
-                model.addState(rowIndex, aValue.toString());
+
+                if (JOptionPane.showConfirmDialog(table, "Apply new state " + aValue + "?", "Confirmation", JOptionPane.OK_CANCEL_OPTION)
+                        == JOptionPane.OK_OPTION) {
+                    model.addState(rowIndex, aValue.toString());
+                } else {
+                    
+                }
             }
         }
     }

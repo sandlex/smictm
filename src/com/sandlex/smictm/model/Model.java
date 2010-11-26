@@ -7,10 +7,7 @@ import com.thoughtworks.xstream.persistence.XmlArrayList;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 
 /**
  * @author Alexey Peskov
@@ -34,6 +31,12 @@ public class Model extends Observable {
 
     public void addTask(String text) {
         tasks.add(new Task(text));
+        selectTasksForDate();
+    }
+
+    public void updateTask(int index, String name) {
+        Task newTask = new Task((Task) tasks.get(index), name);
+        tasks.set(index, newTask);
         selectTasksForDate();
     }
 
@@ -61,24 +64,31 @@ public class Model extends Observable {
     public void selectTasksForDate() {
 
         calendarTasks = new ArrayList<TaskEventBean>();
+        Map<Task, String> calendarTasksMap = new TreeMap<Task, String>();
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        for (Object task : closedTasks) {
-            for (TaskEvent activity : ((Task) task).getActivities()) {
-
-                if (df.format(activity.getDate()).equals(df.format(selectionDate))) {
-                    calendarTasks.add(new TaskEventBean((Task) task, activity));
-                }
-            }
-        }
 
         for (Object task : tasks) {
             for (TaskEvent activity : ((Task) task).getActivities()) {
                 if (df.format(activity.getDate()).equals(df.format(selectionDate))) {
-                    calendarTasks.add(new TaskEventBean((Task) task, activity));
+                    calendarTasksMap.put((Task) task,
+                            calendarTasksMap.containsKey(task) ? calendarTasksMap.get(task) + " > " + activity.getName() : activity.getName());
                 }
             }
         }
 
+        for (Object task : closedTasks) {
+            for (TaskEvent activity : ((Task) task).getActivities()) {
+
+                if (df.format(activity.getDate()).equals(df.format(selectionDate))) {
+                    calendarTasksMap.put((Task) task,
+                            calendarTasksMap.containsKey(task) ? calendarTasksMap.get(task) + " > " + activity.getName() : activity.getName());
+                }
+            }
+        }
+
+        for (Task task : calendarTasksMap.keySet()) {
+            calendarTasks.add(new TaskEventBean(task, calendarTasksMap.get(task)));
+        }
         setChanged();
     	notifyObservers(null);
     }
