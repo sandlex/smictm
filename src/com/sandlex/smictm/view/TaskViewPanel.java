@@ -19,9 +19,8 @@ import java.util.Observable;
  */
 public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
-    public static final String STATE_COL_NAME = "State";
-    public static final String TASK_COL_NAME = "Task";
-    public static final String EDIT_COL_NAME = "";
+    private static final String STATE_COL_NAME = "State";
+    private static final String EDIT_COL_NAME = "";
 
     private JTextArea area;
     private TaskTable table;

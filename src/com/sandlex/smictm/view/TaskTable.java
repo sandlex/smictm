@@ -29,7 +29,7 @@ public abstract class TaskTable extends JTable implements KeyListener {
         super(dm);
         TableColumnModel colModel = getColumnModel();
         for (int j = 0; j < colModel.getColumnCount(); j++) {
-            if ("Task".equals(colModel.getColumn(j).getHeaderValue())) {
+            if (AbstractPanel.TASK_COL_NAME.equals(colModel.getColumn(j).getHeaderValue())) {
                 colModel.getColumn(j).setCellRenderer(new TooltippedRowRenderer());
                 break;
             }

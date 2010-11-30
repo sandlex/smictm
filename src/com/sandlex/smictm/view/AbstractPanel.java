@@ -10,6 +10,8 @@ import java.util.Observer;
  */
 public abstract class AbstractPanel extends JPanel implements Observer {
 
+    protected static final String TASK_COL_NAME = "Task";
+    
     protected Model model;
 
     protected AbstractPanel(Model model) {
