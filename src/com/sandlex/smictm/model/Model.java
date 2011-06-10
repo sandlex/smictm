@@ -61,6 +61,30 @@ public class Model extends Observable {
         selectTasksForDate();
     }
 
+    public boolean isDateHasTasks(Date date) {
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
+        for (Object task : tasks) {
+            for (TaskEvent activity : ((Task) task).getActivities()) {
+                if (df.format(activity.getDate()).equals(df.format(date))) {
+                	return true;
+                }
+            }
+        }
+
+        for (Object task : closedTasks) {
+            for (TaskEvent activity : ((Task) task).getActivities()) {
+
+                if (df.format(activity.getDate()).equals(df.format(date))) {
+                	return true;
+                }
+            }
+        }
+        
+        return false;
+    	
+    }
+    
     public void selectTasksForDate() {
 
         calendarTasks = new ArrayList<TaskEventBean>();

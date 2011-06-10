@@ -1,21 +1,24 @@
 package com.sandlex.smictm.view;
 
-import com.sandlex.smictm.model.Model;
-import com.sandlex.smictm.model.TaskEvent;
-import com.sandlex.smictm.model.TaskEventBean;
-import com.toedter.calendar.JCalendar;
-
-import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Observable;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
+
+import com.sandlex.smictm.calendar.CalendarPanel;
+import com.sandlex.smictm.model.Model;
+import com.sandlex.smictm.model.TaskEvent;
+import com.sandlex.smictm.model.TaskEventBean;
 
 /**
  * @author Alexey Peskov
@@ -25,7 +28,8 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
     private static final String ACTIVITIES_COL_NAME = "Activities";
 
     private JTable table;
-    private JCalendar calendar;
+//    private JCalendar calendar;
+    private CalendarPanel calendar;
 
     public CalendarViewPanel(Model model) {
         super(model);
@@ -36,9 +40,12 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
         BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
 
-        calendar = new JCalendar();
-        calendar.addPropertyChangeListener(this);
+//        calendar = new JCalendar();
+//        calendar.addPropertyChangeListener(this);
 
+//        add(calendar, BorderLayout.NORTH);
+        
+        calendar = new CalendarPanel(model);
         add(calendar, BorderLayout.NORTH);
 
         JScrollPane scrollPane = new JScrollPane();
