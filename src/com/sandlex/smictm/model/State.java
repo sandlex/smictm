@@ -38,15 +38,18 @@ public enum State {
 
         switch (this) {
             case New:
+            	nextStates.add(New);
                 nextStates.add(InProgress);
                 nextStates.add(Cancelled);
                 break;
             case InProgress:
+            	nextStates.add(InProgress);
                 nextStates.add(Completed);
                 nextStates.add(OnHold);
                 nextStates.add(Cancelled);
                 break;
             case OnHold:
+            	nextStates.add(OnHold);
                 nextStates.add(InProgress);
                 nextStates.add(Completed);
                 nextStates.add(Cancelled);

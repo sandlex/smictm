@@ -28,7 +28,6 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
     private static final String ACTIVITIES_COL_NAME = "Activities";
 
     private JTable table;
-//    private JCalendar calendar;
     private CalendarPanel calendar;
 
     public CalendarViewPanel(Model model) {
@@ -40,11 +39,6 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
         BorderLayout layout = new BorderLayout();
         this.setLayout(layout);
 
-//        calendar = new JCalendar();
-//        calendar.addPropertyChangeListener(this);
-
-//        add(calendar, BorderLayout.NORTH);
-        
         calendar = new CalendarPanel(model);
         add(calendar, BorderLayout.NORTH);
 
@@ -56,6 +50,7 @@ public class CalendarViewPanel extends AbstractPanel implements PropertyChangeLi
     }
 
     public void update(Observable o, Object arg) {
+    	calendar.updateCalendar(); //TODO click date on calendar and after refresh date selection disapperas
         ((AbstractTableModel) table.getModel()).fireTableDataChanged();
     }
 

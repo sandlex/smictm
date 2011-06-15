@@ -2,6 +2,7 @@ package com.sandlex.smictm.view;
 
 import com.sandlex.smictm.model.Activity;
 import com.sandlex.smictm.model.Model;
+import com.sandlex.smictm.model.State;
 import com.sandlex.smictm.model.Task;
 
 import javax.swing.*;
@@ -218,8 +219,8 @@ public class TaskViewPanel extends AbstractPanel implements KeyListener {
 
             if (columnIndex == 0) {
 
-                if (JOptionPane.showConfirmDialog(table, "Apply new state " + aValue + "?", "Confirmation", JOptionPane.OK_CANCEL_OPTION)
-                        == JOptionPane.OK_OPTION) {
+            	Task task = model.getTask(rowIndex);
+            	if (!task.getState().equals(State.fromValue(aValue.toString()))) {
                     model.addState(rowIndex, aValue.toString());
                 }
             }

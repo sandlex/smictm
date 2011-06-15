@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jcalendar-1.3.3.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.3.1.jar"/>
 	<classpathentry kind="lib" path="/home/sandlex/java/idea-IU-93.13/lib/junit-4.7.jar"/>
 	<classpathentry kind="output" path="bin"/>

@@ -59,7 +59,8 @@ public class CalendarPanel extends JPanel implements ActionListener,
 		month.addActionListener(this);
 	}
 
-	private void updateCalendar() {
+	public void updateCalendar() {
+		System.out.println("update cal");
 		displayedDate.set((Integer) year.getValue(), Arrays.asList(monthes)
 				.indexOf(month.getModel().getSelectedItem()), 1);
 
