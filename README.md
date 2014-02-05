@@ -27,7 +27,7 @@ Task table: Change value in "State" column | Bring a task to the new state
 Calendar: Click on date | Display tasks state changes for selected date
 
 
-https://github.com/sandlex/smictm/blob/master/img/smictm-0.2.png
+![screenshot](https://raw2.github.com/sandlex/smictm/master/img/smictm-0.2.png)
 
 ##Changelog
 Version 0.2 (November 26, 2010)
