@@ -2,7 +2,7 @@
 
 *smictm* is simple task manager providing you with answers on questions:
  * What should be done?
- * What I am working on right now?a
+ * What I am working on right now?
  * What have I been doing in particular day?
 
 ##Installation
